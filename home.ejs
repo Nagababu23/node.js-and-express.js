@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        * {
+            margin: 0;
+        }
+        body {
+            background-color: rgb(155, 176, 169);
+            background-size: cover;
+            height: 100vh;
+            padding: 20px;
+        }
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-between;
+            padding: 30px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        ul li {
+            font-size: 15px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        input {
+            border-radius: 2px;
+            border: none;
+            font-size: 18px;
+            padding: 5px;
+            font-weight: bold;
+            outline: none;
+            width: 90%;
+        }
+        .search-img {
+            background-color: rgb(185, 195, 209);
+            padding: 6px;
+        }
+        .inn {
+            display: flex;
+            justify-content: space-between;
+        }
+        .con {
+            display: flex;
+            justify-content: center;
+        }
+        .con h1 {
+            font-size: 50px;
+            font-weight: bold;
+            font-family: Roboto;
+        }
+        .icon {
+            background-color: rgb(60, 60, 79);
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px 5px 10px;
+            margin-right: 10px;
+        }
+        .sub {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            margin-left: 0;
+        }
+        .coo{
+            background-color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .coo a{
+            text-decoration: none;
+        }
+
+        .results{
+            padding: 20px;
+        }
+        @media screen and (min-width: 650px) {
+            ul li {
+                font-size: 25px;
+                font-weight: bold;
+                margin-right: 40px;
+            }
+            input {
+                border-radius: 2px;
+                border: none;
+                font-size: 15px;
+                padding: 5px 5px 5px 10px;
+                font-weight: bold;
+                outline: none;
+                width: 45vh;
+                height: 40px;
+            }
+            .search-img {
+                background-color: rgb(185, 195, 209);
+                padding: 9px;
+            }
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Search</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li style="font-style: italic;">News<sub><span style="color: beige;">Dheko</span></sub></li>
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <li class="icon">N</li>
+                <li>News</li>
+            </div>
+        </ul>
+    </nav>
+    <div class="con">
+        <div style="display: flex;justify-content: center;align-items: center;">
+            <input type="search" placeholder="search..." id="searchInput" />
+            <button class="sub search-img" onclick="searchNews()">
+                <img src="https://static-00.iconduck.com/assets.00/search-icon-2048x2048-cmujl7en.png" width="21px" height="18px" alt="search"/>
+            </button>
+        </div>
+    </div>
+    <div class="results" id="results"></div>
+    <script>
+          async function searchNews() {
+    const query = document.getElementById('searchInput').value;
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = 'Loading...';
+    document.getElementById('searchInput').innerHTML='';
+    try {
+      const response = await fetch(`https://api.webz.io/newsApiLite?token=f163a66a-8af8-4420-8477-d7db2fc8d4e4&q=${query}`);
+      const data = await response.json();
+      console.log(data,data.posts)
+      resultsDiv.innerHTML = '';
+
+      if (data.posts.length>0) {
+        data.posts.forEach(article => {
+          const articleDiv = document.createElement('div');
+          articleDiv.classList.add('coo')
+          articleDiv.style.marginBottom = '20px';
+          articleDiv.innerHTML = `
+            <h3>${article.highlightText}</h3>
+            <a href="${article.url}" target="_blank">Read more</a>
+          `;
+          resultsDiv.appendChild(articleDiv);
+        });
+      } else if (!data.hits) {
+        resultsDiv.innerHTML = 'No articles found';
+      } else {
+        resultsDiv.innerHTML = 'Error fetching data';
+      }
+    } catch (error) {
+      resultsDiv.innerHTML = 'Error fetching data';
+    }
+  }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Search</title>
+    <style>
+        body {
+            background-color: rgb(155, 176, 169);
+            background-size: cover;
+            height: 100vh;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-between;
+            padding: 30px;
+        }
+        ul li {
+            font-size: 15px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        input {
+            border-radius: 2px;
+            border: none;
+            font-size: 15px;
+            padding: 5px 5px 5px 10px;
+            font-weight: bold;
+            outline: none;
+        }
+        .search-img {
+            background-color: rgb(185, 195, 209);
+            padding: 5px;
+        }
+        .inn {
+            display: flex;
+            justify-content: space-between;
+        }
+        .con {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        .con h1 {
+            font-size: 50px;
+            font-weight: bold;
+            font-family: Roboto;
+        }
+        .results {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .results ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .results li {
+            background-color: white;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        @media screen and (min-width: 650px) {
+            ul li {
+                font-size: 25px;
+                font-weight: bold;
+                margin-right: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li style="font-style: italic;">College<sub><span style="color: beige;">Dheko</span></sub></li>
+        </ul>
+    </nav>
+    <div class="con">
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <input type="search" id="searchInput" placeholder="search..."/>
+            <img src="https://static-00.iconduck.com/assets.00/search-icon-2048x2048-cmujl7en.png" width="21px" height="18px" alt="search" class="search-img" onclick="searchUniversities()"/>
+        </div>
+    </div>
+    <div class="results" id="results"></div>
+
+    <script>
+        async function searchUniversities() {
+            const country = document.getElementById('searchInput').value;
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = 'Loading...';
+            try {
+                const response = await fetch(`http://universities.hipolabs.com/search?country=${country}`);
+                const universities = await response.json();
+                displayResults(universities);
+            } catch (error) {
+                resultsDiv.innerHTML = 'Error fetching data';
+            }
+        }
+
+        function displayResults(universities) {
+            const resultsDiv = document.getElementById('results');
+            if (universities.length === 0) {
+                resultsDiv.innerHTML = 'No universities found';
+                return;
+            }
+            const ul = document.createElement('ul');
+            universities.forEach(university => {
+                const li = document.createElement('li');
+                li.textContent = university.name;
+                ul.appendChild(li);
+            });
+            resultsDiv.innerHTML = '';
+            resultsDiv.appendChild(ul);
+        }
+    </script>
+</body>
+</html>

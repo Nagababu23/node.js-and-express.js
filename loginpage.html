@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            background: linear-gradient(to bottom, rgb(239, 208, 146), rgb(150, 227, 217));
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        div {
+            background-color: rgb(226, 239, 245);
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            width: 40%;
+            box-shadow: 2px 1px 2px 1px rgb(159, 155, 155);
+            font-family: Roboto;
+        }
+        input[type='text'], input[type='email'], input[type='password'] {
+            width: 70%;
+            margin-bottom: 10px;
+            padding: 15px;
+            border: 1px solid rgb(214, 207, 207);
+            border-radius: 10px;
+            font-size: 17px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .sub {
+            background-color: rgb(82, 159, 246);
+            border: none;
+            color: white;
+            font-size: 17px;
+            padding: 7px 10px 7px 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        p {
+            color: red;
+            display: none;
+        }
+        span button {
+            border: none;
+            background-color: transparent;
+            font-size: 25px;
+            cursor: pointer;
+        } 
+        span .sgs{
+            color: rgb(0, 98, 255);
+            font-weight: bold;
+        }
+        .login {
+            display: none;
+        }
+        .stye{
+            font-weight: bold;
+            color: rgb(0, 98, 255);
+        }
+        .unst{
+            font-weight: normal;
+            color: black;
+        }
+        @media screen and (max-width: 480px) {
+            div {
+                width: 90%;
+            }        
+            input[type='text'], input[type='email'], input[type='password'] {
+                width: 90%;
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1>
+            <span><button class="sgs" id="sg" onclick="showSignUp()">SignUp ?</button></span>
+            <span ><button id="lg" onclick="showLogin()">Login</button></span>
+        </h1>
+        <form method="GET" action="signUp" id="sign">
+            <input type="text" name="username" id="usernames" placeholder="Enter your Name" required><br>
+            <input type="email" name="email" id="signupEmail" placeholder="Enter your Email" required><br>
+            <input type="password" name="password" id="signupPassword" placeholder="Enter your password" required><br>
+            <input type="password" name="rpassword" id="rpassword" placeholder="Confirm your password" required><br>
+            <input type="submit" class="sub">
+        </form>
+        <form method="POST" action="logingUp" class="login" id="log">
+            <input type="email" name="email" id="loginEmail" placeholder="Enter your Email" required><br>
+            <input type="password" name="password" id="password" placeholder="Enter your password" required><br>
+            <input type="submit" class="sub">
+        </form>
+    </div>
+    <script>
+       
+       function showSignUp() {
+        
+            const ss = document.getElementById('sign');
+            const lg = document.getElementById('log');
+            ss.style.display = 'block';
+            lg.style.display = 'none';
+
+            document.getElementById('sg').classList.add('stye');
+            document.getElementById('lg').classList.remove('stye');
+        }
+
+        function showLogin() {
+            const ss = document.getElementById('sign');
+            const lg = document.getElementById('log');
+            ss.style.display = 'none';
+            lg.style.display = 'block';
+
+            document.getElementById('sg').classList.remove('stye');
+            document.getElementById('sg').classList.remove('sgs');
+            document.getElementById('lg').classList.add('stye');
+        }
+
+
+        document.getElementById('sign').addEventListener('submit', function(event) {
+            var password = document.getElementById('signupPassword').value;
+            var confirmPassword = document.getElementById('rpassword').value;
+            var errorMessage = document.getElementById('err');
+            
+            if (password !== confirmPassword) {
+                errorMessage.style.display = 'block';
+                event.preventDefault();
+            } else {
+                errorMessage.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
